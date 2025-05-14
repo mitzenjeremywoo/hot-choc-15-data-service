@@ -8,7 +8,7 @@ namespace Accounts.Types
     {
         private readonly Dictionary<int, User> _users;
 
-        public UserRepository()
+        public UserRepository(BloggingContext context)
         {
             _users = new User[]
             {

@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Accounts.Types;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<BloggingContext>(options =>
+    options.UseInMemoryDatabase("InMemoryBloggingDb"));
+
 builder.Services
-    .AddSingleton<UserRepository>();
+    .AddScoped<UserRepository>();
 
 builder.Services
     .AddGraphQLServer()
