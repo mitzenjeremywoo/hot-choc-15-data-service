@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<BloggingContext>(options =>
+builder.Services.AddDbContext<UserContext>(options =>
     options.UseInMemoryDatabase("InMemoryBloggingDb"));
 
 builder.Services

@@ -1,21 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Accounts.Types
 {
     public class UserRepository
     {
         private readonly Dictionary<int, User> _users;
+        private UserContext _context;
 
-        public UserRepository(BloggingContext context)
-        {
-            _users = new User[]
-            {
-                new User(1, "Ada Lovelace", new DateTime(1815, 12, 10), "@ada"),
-                new User(2, "Alan Turing", new DateTime(1912, 06, 23), "@complete"),
-                new User(3, "Mark Allen", new DateTime(1912, 06, 23), "@complete")
-            }.ToDictionary(t => t.Id);
+        public UserRepository(UserContext context)
+        {   
+            _context = context;
+
+            SeedDataAsync();
+
+            _users = _context.Users.ToDictionary(t => t.Id);
         }
 
         public User GetUser(int id) => _users[id];
@@ -26,6 +27,16 @@ namespace Accounts.Types
         {
             new PowerUser(_users[0].Id, _users[0].Username, new DateTime(2015,11,22), "")
         }; 
-
+        void SeedDataAsync()
+        {
+            if (!_context.Users.Any())
+            {
+                _context.Users.AddRange(
+                    new User(1, "Jack", DateTime.Now, "Kai"),
+                    new User(2, "Jack2", DateTime.Now, "Kai2")
+                );
+                _context.SaveChanges();
+            }
+        }
     }
 }
