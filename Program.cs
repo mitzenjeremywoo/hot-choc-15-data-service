@@ -15,6 +15,7 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .AddTypes()
+    .AddMutationType<Mutation>()
     .AddGlobalObjectIdentification();
 
 var app = builder.Build();

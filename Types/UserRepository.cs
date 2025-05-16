@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,12 +8,9 @@ namespace Accounts.Types
     {
         private readonly Dictionary<int, User> _users;
         private UserContext _context;
-
         public UserRepository(UserContext context)
         {   
             _context = context;
-
-            SeedDataAsync();
 
             _users = _context.Users.ToDictionary(t => t.Id);
         }
@@ -25,18 +21,15 @@ namespace Accounts.Types
 
         public IEnumerable<PowerUser> GetPowerUsers() => new PowerUser[]
         {
-            new PowerUser(_users[0].Id, _users[0].Username, new DateTime(2015,11,22), "")
-        }; 
-        void SeedDataAsync()
+            new PowerUser(_users[0].Id, _users[0].Username, "")
+        };
+
+        public async Task<User> SaveUserAsync(User user)
         {
-            if (!_context.Users.Any())
-            {
-                _context.Users.AddRange(
-                    new User(1, "Jack", DateTime.Now, "Kai"),
-                    new User(2, "Jack2", DateTime.Now, "Kai2")
-                );
-                _context.SaveChanges();
-            }
+            //var user = new User(id, name, DateTime.Now, username);
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return user;
         }
     }
 }
